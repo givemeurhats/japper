@@ -70,12 +70,12 @@ app.listen(PORT, () => {
 ```typescript
 import { JapperConnection } from "japper" // import Japper Connection
 
-const db = new JapperPool({
+const config = {
   database: "db_name",
   user: "db_username",
   password: "db_password"
   // ....
-});
+};
 
 class User {
   username!: string;
@@ -83,8 +83,8 @@ class User {
 };
 
 try {
-  const Users = new JapperConnection(config).OpenAsync((cn) => {
-    await db.QueryAsync<User>("SELECT * FROM users")
+  const Users = new JapperConnection(config).OpenAsync(async (cn) => {
+    await cn.QueryAsync<User>("SELECT * FROM users")
   })) // => Array<User>
   console.log(Users);
 }
