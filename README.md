@@ -225,8 +225,15 @@ Example Usage:
 ```typescript
 import { JapperConnection } from "japper";
 
+const config = {
+  database: "db_name",
+  user: "db_username",
+  password: "db_password",
+  // ....
+};
+
 //manually closing connection
-const conn = new JapperConnection();
+const conn = new JapperConnection(config);
 await conn.ExecuteAsync("DELETE FROM users"); // first query will automatically open connection
 await conn.InsertAsync("users", { username: "test", email: "test" });
 await conn.CloseAsync(); //after we're done we close it
@@ -234,7 +241,7 @@ await conn.CloseAsync(); //after we're done we close it
 // if we need to use db again, we create a new connection again!
 
 // better way (no need to manually close connection)
-new JapperConnection(async (cn) => {
+new JapperConnection(config)(async (cn) => {
   await cn.ExecuteAsync("DELETE FROM users");
   await cn.InsertAsync("users", { username: "test", email: "test" });
 });
