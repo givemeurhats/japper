@@ -1,0 +1,43 @@
+{
+  "name": "japper",
+  "version": "1.0.0",
+  "description": "Database library for PostgreSQL that doesn't get in your way but makes interacting with database more elegant.It's a thin layer on top of node-postgres built with typescript in mind, heavily inspired by C# dapper library. Writing raw SQL is the recommended way to do anything besides a couple goodies included like simple CRUD queries that are used always. Be more productive when working with your database while still having all the control!",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test",
+    "test": "jest --config jest.config.json --runInBand --verbose",
+    "test:dev": "jest --config jest.config.json --runInBand --verbose --watchAll"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "keywords": [
+    "pg",
+    "postgres",
+    "postgresql",
+    "sql",
+    "database",
+    "orm",
+    "mapper",
+    "dapper",
+    "db"
+  ],
+  "author": "Eric Jardas",
+  "license": "MIT",
+  "dependencies": {
+    "lodash.omit": "^4.5.0",
+    "pg": "^8.4.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.15",
+    "@types/lodash.omit": "^4.5.6",
+    "@types/pg": "^7.14.5",
+    "dotenv": "^8.2.0",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.4.3",
+    "typescript": "^4.0.5"
+  }
+}
