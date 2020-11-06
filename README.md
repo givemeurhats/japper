@@ -52,7 +52,7 @@ class User {
 app.get("/users", async (req, res) => {
   try {
     // execute SQL queries and get results back ready to be used
-    res.status(200).send(await db.QueryAsync<User>("SELECT * FROM users"));
+    res.status(200).send(await db.queryAsync<User>("SELECT * FROM users"));
   }
   catch(error) {
     ...
@@ -96,7 +96,7 @@ catch {
 
 ## Main usage
 
-### **queryAsync** - execute query and return array of found rows (preferebly typed if using typescript)
+### **queryAsync** - execute query and return array of found rows (preferably typed if using typescript)
 
 ```typescript
 async queryAsync<T extends object>(query: string, params?: any[] | undefined): Promise<T[]>
@@ -109,7 +109,7 @@ const GmailUsers = await db.queryAsync<User>("SELECT * FROM users where email LI
 const PostsNewerThen = await db.queryAsync<Post>("SELECT * FROM posts where created_at >= $1", [new Date(2020, 1, 1)]);
 ```
 
-### **queryFirstAsync** - execute query and return a single row as object (preferebly typed if using typescript)
+### **queryFirstAsync** - execute query and return a single row as object (preferably typed if using typescript)
 
 ```typescript
 async queryFirstAsync<T extends object>(query: string, params?: any[] | undefined): Promise<T | null>
@@ -166,7 +166,7 @@ class User {
 
 await db.insertAsync("users", { username: "test", password: "plainPasswordYuck" });
 
-// or if we wan't to exclude some properties from inserting (in this example we don't insert id)
+// or if we want to exclude some properties from inserting (in this example we don't insert id)
 const newUser: User = { username: "test", password: "plainPasswordYuck" };
 await db.insertAsync("users", newUser, ["id"]);
 ```
@@ -184,7 +184,7 @@ Example Usage:
 const newUserID = await db.insertReturningAsync("users", { username: "test", password: "plainPasswordYuck" }, "id");
 ```
 
-### **UpdateAsync** - update an object based on schema
+### **updateAsync** - update an object based on schema
 
 ```typescript
 async updateAsync<T extends object, K extends keyof T>(tableName: string, obj: T, primaryKeyName: K, excludeFields: K[] | null = null): Promise<number>
@@ -197,7 +197,7 @@ Example Usage:
 const newUserID = await db.updateAsync("users", { id: 1, username: "changed", password: "plainPasswordYuck" }, "id");
 ```
 
-### **DeleteAsync** - delete a row based on a single field
+### **deleteAsync** - delete a row based on a single field
 
 ```typescript
 async deleteAsync(tableName: string, primaryKeyName: string = "id", primaryKeyValue: any): Promise<number>
@@ -212,7 +212,7 @@ const newUserID = await b.deleteAsync("users", "id", 1);
 
 ## JapperPool vs JapperConnection
 
-**JapperPool** mantains a pool of connections that can be reused. So when you create a new JapperPool you can just issue queries on it whenever you want. The pool can remain opened for ever.
+**JapperPool** maintains a pool of connections that can be reused. So when you create a new JapperPool you can just issue queries on it whenever you want. The pool can remain opened for ever.
 When you want to close the pool you call
 
     .closeAsync()
@@ -246,7 +246,7 @@ new JapperConnection(config)(async (cn) => {
 });
 ```
 
-## Accesing node-postgres
+## Accessing node-postgres
 
 JapperConnection and JapperPoll have a property named `adapter` which is a node-postgres object!
 
@@ -267,7 +267,7 @@ When you open an issue please provide:
 I will **happily** accept your pull request if it:
 
 - **has tests**
-- added or changed functionallity is in the japper philosophy
+- added or changed functionality is in the japper philosophy
 - does not break backwards compatibility
 
 If your change involves breaking backwards compatibility please please point that out in the pull request & we can discuss & plan when and how to release it and what type of documentation or communication it will require.
