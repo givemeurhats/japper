@@ -246,7 +246,7 @@ JapperConnection and JapperPoll have a property named `adapter` which is a node-
 
 ## Support
 
-node-postgres is free software. If you encounter a bug with the library please open an issue on the [GitHub repo](https://github.com/givemeurhats/japper).
+japper is free software. If you encounter a bug with the library please open an issue on the [GitHub repo](https://github.com/givemeurhats/japper).
 
 When you open an issue please provide:
 
