@@ -7,58 +7,58 @@ export class Japper {
   public isOpened!: boolean;
   protected isClient: boolean = false;
 
-  async queryAsync<T extends object>(query: string, params?: any[] | undefined): Promise<T[]> {
-    if (!this.isOpened) await this.openAsync();
+  async query<T extends object>(query: string, params?: any[] | undefined): Promise<T[]> {
+    if (!this.isOpened) await this.open();
     return (await this.adapter.query(query, params)).rows;
   }
 
-  async queryFirstAsync<T extends object>(query: string, params?: any[] | undefined): Promise<T | null> {
-    if (!this.isOpened) await this.openAsync();
+  async queryFirst<T extends object>(query: string, params?: any[] | undefined): Promise<T | null> {
+    if (!this.isOpened) await this.open();
     const value = await this.adapter.query(query, params);
     return value && value.rows.length > 0 ? value.rows[0] : null;
   }
 
-  async executeScalarAsync(query: string, params?: any[]): Promise<string | null> {
-    if (!this.isOpened) await this.openAsync();
+  async executeScalar(query: string, params?: any[]): Promise<string | null> {
+    if (!this.isOpened) await this.open();
     const value = await this.adapter.query(query, params);
     return value && value.rows.length > 0 ? value.rows[0][value.fields[0].name] : null;
   }
 
-  async executeAsync(query: string, params?: any[]): Promise<number> {
-    if (!this.isOpened) await this.openAsync();
+  async execute(query: string, params?: any[]): Promise<number> {
+    if (!this.isOpened) await this.open();
     return (await this.adapter.query(query, params)).rowCount;
   }
 
-  async insertAsync<T extends object, K extends keyof T>(tableName: string, obj: T, excludeFields: K[] | null = null): Promise<number> {
-    if (!this.isOpened) await this.openAsync();
+  async insert<T extends object, K extends keyof T>(tableName: string, obj: T, excludeFields: K[] | null = null): Promise<number> {
+    if (!this.isOpened) await this.open();
     const cleanObject = excludeFields != null ? omit(obj, excludeFields) : obj;
     return (await this.adapter.query(buildInsertQuery(tableName, cleanObject), extractValuesForSQL(cleanObject))).rowCount;
   }
 
-  async insertReturningAsync<T extends object, R extends keyof T, E extends keyof T>(tableName: string, obj: T, returningPropertyName: R, excludeFields: E[] | null = null): Promise<string> {
-    if (!this.isOpened) await this.openAsync();
+  async insertReturning<T extends object, R extends keyof T, E extends keyof T>(tableName: string, obj: T, returningPropertyName: R, excludeFields: E[] | null = null): Promise<string> {
+    if (!this.isOpened) await this.open();
     const cleanObject = excludeFields != null ? omit(obj, excludeFields) : obj;
     const query = await this.adapter.query(`${buildInsertQuery(tableName, cleanObject)} RETURNING ${returningPropertyName}`, extractValuesForSQL(cleanObject));
     return query.rows[0][query.fields[0].name];
   }
 
-  async updateAsync<T extends object, K extends keyof T>(tableName: string, obj: T, primaryKeyName: K, excludeFields: K[] | null = null): Promise<number> {
-    if (!this.isOpened) await this.openAsync();
+  async update<T extends object, K extends keyof T>(tableName: string, obj: T, primaryKeyName: K, excludeFields: K[] | null = null): Promise<number> {
+    if (!this.isOpened) await this.open();
     const cleanObject = excludeFields != null ? omit(obj, excludeFields) : obj;
     return (await this.adapter.query(buildUpdateQuery(tableName, cleanObject, primaryKeyName.toString()), [obj[primaryKeyName], ...extractValuesForSQL(cleanObject)])).rowCount;
   }
 
-  async deleteAsync(tableName: string, primaryKeyName: string = "id", primaryKeyValue: any): Promise<number> {
-    if (!this.isOpened) await this.openAsync();
+  async delete(tableName: string, primaryKeyName: string = "id", primaryKeyValue: any): Promise<number> {
+    if (!this.isOpened) await this.open();
     return (await this.adapter.query(`DELETE FROM ${tableName} WHERE ${primaryKeyName} = $1`, [primaryKeyValue])).rowCount;
   }
 
-  public async openAsync() {
+  public async open() {
     if (!this.isOpened) await this.adapter.connect();
     this.isOpened = true;
   }
 
-  async closeAsync() {
+  async close() {
     if (this.isOpened) await this.adapter.end();
     this.isOpened = false;
   }

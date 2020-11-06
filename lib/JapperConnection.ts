@@ -13,12 +13,12 @@ export class JapperConnection extends Japper {
     this.isOpened = false;
   }
 
-  async openAsync(callback: JapperConnectionCallback | null = null) {
+  async open(callback: JapperConnectionCallback | null = null) {
     if (!this.isOpened) await this.adapter.connect();
     this.isOpened = true;
     if (callback) {
       await callback(this);
-      await this.closeAsync();
+      await this.close();
     }
   }
 }
