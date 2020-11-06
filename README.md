@@ -1,5 +1,7 @@
 # Japper
 
+<span class="badge-npmversion"><a href="https://npmjs.org/package/japper" title="View this project on NPM"><img src="https://img.shields.io/npm/v/japper.svg" alt="NPM version" /></a></span>
+
 Database library for PostgreSQL that doesn't get in your way but makes interacting with database more elegant.
 
 It's a thin layer on top of [node-postgres](https://node-postgres.com/) built with typescript in mind, heavily inspired by C# dapper library.
