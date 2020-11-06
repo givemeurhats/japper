@@ -96,7 +96,7 @@ catch {
 
 ## Main usage
 
-### **QueryAsync** - execute query and return array of found rows (preferebly typed if using typescript)
+### **QueryAsync** - execute query and return array of found rows (preferably typed if using typescript)
 
 ```typescript
 async QueryAsync<T extends object>(query: string, params?: any[] | undefined): Promise<T[]>
@@ -109,7 +109,7 @@ const GmailUsers = await db.QueryAsync<User>("SELECT * FROM users where email LI
 const PostsNewerThen = await db.QueryAsync<Post>("SELECT * FROM posts where created_at >= $1", [new Date(2020, 1, 1)]);
 ```
 
-### **QueryFirstAsync** - execute query and return a single row as object (preferebly typed if using typescript)
+### **QueryFirstAsync** - execute query and return a single row as object (preferably typed if using typescript)
 
 ```typescript
 async QueryFirstAsync<T extends object>(query: string, params?: any[] | undefined): Promise<T | null>
@@ -166,7 +166,7 @@ class User {
 
 await db.InsertAsync("users", { username: "test", password: "plainPasswordYuck" });
 
-// or if we wan't to exclude some properties from inserting (in this example we don't insert id)
+// or if we want to exclude some properties from inserting (in this example we don't insert id)
 const newUser: User = { username: "test", password: "plainPasswordYuck" };
 await db.InsertAsync("users", newUser, ["id"]);
 ```
@@ -212,7 +212,7 @@ const newUserID = await b.DeleteAsync("users", "id", 1);
 
 ## JapperPool vs JapperConnection
 
-**JapperPool** mantains a pool of connections that can be reused. So when you create a new JapperPool you can just issue queries on it whenever you want. The pool can remain opened for ever.
+**JapperPool** maintains a pool of connections that can be reused. So when you create a new JapperPool you can just issue queries on it whenever you want. The pool can remain opened for ever.
 When you want to close the pool you call
 
     .CloseAsync()
@@ -246,7 +246,7 @@ new JapperConnection(config)(async (cn) => {
 });
 ```
 
-## Accesing node-postgres
+## Accessing node-postgres
 
 JapperConnection and JapperPoll have a property named `adapter` which is a node-postgres object!
 
@@ -267,7 +267,7 @@ When you open an issue please provide:
 I will **happily** accept your pull request if it:
 
 - **has tests**
-- added or changed functionallity is in the japper philosophy
+- added or changed functionality is in the japper philosophy
 - does not break backwards compatibility
 
 If your change involves breaking backwards compatibility please please point that out in the pull request & we can discuss & plan when and how to release it and what type of documentation or communication it will require.
