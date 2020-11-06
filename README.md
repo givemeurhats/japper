@@ -22,7 +22,8 @@ It's a thin layer on top of [node-postgres](https://node-postgres.com/) built wi
 
 ## Installation
 
-    $ npm install japper
+    $ npm install japper pg --save
+    $ npm install @types/pg --save-dev
 
 ## Usage
 
