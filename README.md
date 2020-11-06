@@ -35,6 +35,7 @@ import { JapperPool } from "japper"; // import Japper Pool
 import express from "express";
 
 const app = express();
+const PORT = 3000;
 
 // create a Japper pool of connections
 const db = new JapperPool({
@@ -84,7 +85,7 @@ class User {
 try {
   const Users = new JapperConnection(config).open(async (cn) => {
     await cn.query<User>("SELECT * FROM users")
-  })) // => Array<User>
+  }) // => Array<User>
   console.log(Users);
 }
 catch {
@@ -131,7 +132,7 @@ Example Usage:
 
 ```typescript
 const FirstUserEmail = await db.executeScalar("SELECT email FROM users where id = $1", [1]);
-const GetIDByUsername = parseInt(await db.executeScalar("SELECT id from users WHERE username = $1", ["someUsername"]));
+const GetIDByUsername = parseInt(await db.executeScalar("SELECT id FROM users WHERE username = $1", ["someUsername"]));
 ```
 
 ### **execute** - execute query and return number of changed rows
@@ -143,7 +144,7 @@ async execute(query: string, params?: any[]): Promise<number>
 Example Usage:
 
 ```typescript
-const DeletedUsers = await db.execute("DELETE FROM users  WHERE email LIKE '%gmail.com'");
+const DeletedUsers = await db.execute("DELETE FROM users WHERE email LIKE '%gmail.com'");
 console.log(`Deleted ${DeletedUsers} users`);
 ```
 
@@ -282,7 +283,7 @@ If your change involves breaking backwards compatibility please please point tha
 
 ## License
 
-Copyright (c) 2020-2030 Eric Jardas (givemeurhats@gmail.com)
+Copyright (c) 2020 Eric Jardas (givemeurhats@gmail.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
