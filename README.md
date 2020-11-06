@@ -86,7 +86,7 @@ class User {
 };
 
 try {
-  const Users = mew JapperConnection(config).OpenAsync((cn) => {
+  const Users = new JapperConnection(config).OpenAsync((cn) => {
     await db.QueryAsync<User>("SELECT * FROM users")
   })) // => Array<User>
   console.log(Users);
@@ -127,14 +127,16 @@ const FirstGmailUser = await db.QueryFirstAsync<User>("SELECT * FROM users where
 
 ### **ExecuteScalarAsync** - execute query and return a single value as string
 
-````typescript
-async ExecuteScalarAsync(query: string, params?: any[]): Promise<string | null>
 ```typescript
+async ExecuteScalarAsync(query: string, params?: any[]): Promise<string | null>
+```
+
 Example Usage:
+
 ```typescript
 const FirstUserEmail = await db.ExecuteScalarAsync("SELECT email FROM users where id = $1", [1]);
 const GetIDByUsername = parseInt(await db.ExecuteScalarAsync("SELECT id from users WHERE username = $1", ["someUsername"]));
-````
+```
 
 ### **ExecuteAsync** - execute query and return number of changed rows
 
