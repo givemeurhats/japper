@@ -34,63 +34,67 @@ All of the example are written with [Typescript](https://www.typescriptlang.org/
 
 ### Usage with [Express](https://expressjs.com/) (connection pool example)
 
-    import { JapperPool } from "japper" // import Japper Pool
-    import express from "express";
+```typescript
+import { JapperPool } from "japper"; // import Japper Pool
+import express from "express";
 
-    const app = express();
+const app = express();
 
-    // create a Japper pool of connections
-    const db = new JapperPool({
-      database: "db_name",
-      user: "db_username",
-      password: "db_password"
-      // ....
-    })
+// create a Japper pool of connections
+const db = new JapperPool({
+  database: "db_name",
+  user: "db_username",
+  password: "db_password"
+  // ....
+});
 
-    class User {
-      username!: string;
-      email!: string;
-    }
+class User {
+  username!: string;
+  email!: string;
+};
 
-    app.get("/users", async (req, res) => {
-      try {
-        // execute SQL queries and get results back ready to be used
-        res.status(200).send(await db.QueryAsync<User>("SELECT * FROM users"));
-      }
-      catch(error) {
-        ...
-      }
-    })
+app.get("/users", async (req, res) => {
+  try {
+    // execute SQL queries and get results back ready to be used
+    res.status(200).send(await db.QueryAsync<User>("SELECT * FROM users"));
+  }
+  catch(error) {
+    ...
+  }
+});
 
-    app.listen(PORT, () => {
-      console.log(`⚡️[server]: Server is running at https://localhost:${PORT}`)
-    });
+app.listen(PORT, () => {
+  console.log(`⚡️[server]: Server is running at https://localhost:${PORT}`)
+});
+```
 
 ### Usage without a connection pool
 
-    import { JapperConnection } from "japper" // import Japper Connection
+```typescript
+import { JapperConnection } from "japper" // import Japper Connection
 
-    const db = new JapperPool({
-      database: "db_name",
-      user: "db_username",
-      password: "db_password"
-      // ....
-    })
+const db = new JapperPool({
+  database: "db_name",
+  user: "db_username",
+  password: "db_password"
+  // ....
+});
 
-    class User {
-      username!: string;
-      email!: string;
-    }
+class User {
+  username!: string;
+  email!: string;
+};
 
-    try {
-      const Users = mew JapperConnection(config).OpenAsync((cn) => {
-        await db.QueryAsync<User>("SELECT * FROM users")
-      })) // => Array<User>
-      console.log(Users);
-    }
-    catch {
-      ...
-    }
+try {
+  const Users = mew JapperConnection(config).OpenAsync((cn) => {
+    await db.QueryAsync<User>("SELECT * FROM users")
+  })) // => Array<User>
+  console.log(Users);
+}
+catch {
+  ...
+}
+```
 
 ## API documentation
 
@@ -98,85 +102,115 @@ All of the example are written with [Typescript](https://www.typescriptlang.org/
 
 ### **QueryAsync** - execute query and return array of found rows (preferebly typed if using typescript)
 
-    async QueryAsync<T extends object>(query: string, params?: any[] | undefined): Promise<T[]>
+```typescript
+async QueryAsync<T extends object>(query: string, params?: any[] | undefined): Promise<T[]>
+```
 
 Example Usage:
 
-    const GmailUsers = await db.QueryAsync<User>("SELECT * FROM users where email LIKE '%gmail.com'");
-    const PostsNewerThen = await db.QueryAsync<Post>("SELECT * FROM posts where created_at >= $1, [new Date(2020, 1, 1)]);
+```typescript
+const GmailUsers = await db.QueryAsync<User>("SELECT * FROM users where email LIKE '%gmail.com'");
+const PostsNewerThen = await db.QueryAsync<Post>("SELECT * FROM posts where created_at >= $1", [new Date(2020, 1, 1)]);
+```
 
 ### **QueryFirstAsync** - execute query and return a single row as object (preferebly typed if using typescript)
 
-    async QueryFirstAsync<T extends object>(query: string, params?: any[] | undefined): Promise<T | null>
+```typescript
+async QueryFirstAsync<T extends object>(query: string, params?: any[] | undefined): Promise<T | null>
+```
 
 Example Usage:
 
-    const FirstGmailUser = await db.QueryFirstAsync<User>("SELECT * FROM users where email LIKE '%gmail.com' ORDER BY ID ASC LIMIT 1");
+```typescript
+const FirstGmailUser = await db.QueryFirstAsync<User>("SELECT * FROM users where email LIKE '%gmail.com' ORDER BY ID ASC LIMIT 1");
+```
 
 ### **ExecuteScalarAsync** - execute query and return a single value as string
 
-    async ExecuteScalarAsync(query: string, params?: any[]): Promise<string | null>
-
+````typescript
+async ExecuteScalarAsync(query: string, params?: any[]): Promise<string | null>
+```typescript
 Example Usage:
-
-    const FirstUserEmail = await db.ExecuteScalarAsync("SELECT email FROM users where id = $1, [1]);
-    const GetIDByUsername = parseInt(await db.ExecuteScalarAsync("SELECT id from users WHERE username = $1, ["someUsername"]));
+```typescript
+const FirstUserEmail = await db.ExecuteScalarAsync("SELECT email FROM users where id = $1", [1]);
+const GetIDByUsername = parseInt(await db.ExecuteScalarAsync("SELECT id from users WHERE username = $1", ["someUsername"]));
+````
 
 ### **ExecuteAsync** - execute query and return number of changed rows
 
-    async ExecuteAsync(query: string, params?: any[]): Promise<number>
+```typescript
+async ExecuteAsync(query: string, params?: any[]): Promise<number>
+```
 
 Example Usage:
 
-    const DeletedUsers = await db.ExecuteAsync("DELETE FROM users  WHERE email LIKE '%gmail.com');
-    console.log(`Deleted ${DeletedUsers} users`);
+```typescript
+const DeletedUsers = await db.ExecuteAsync("DELETE FROM users  WHERE email LIKE '%gmail.com'");
+console.log(`Deleted ${DeletedUsers} users`);
+```
 
 ## CRUD helpers
 
 ### **InsertAsync** - insert row based on schema (making DTOs single source of truth)
 
-    async InsertAsync<T extends object, K extends keyof T>(tableName: string, obj: T, excludeFields: K[] | null = null): Promise<number>
+```typescript
+async InsertAsync<T extends object, K extends keyof T>(tableName: string, obj: T, excludeFields: K[] | null = null): Promise<number>
+```
 
 Example Usage:
 
-    class User {
-      id?: number;
-      username!: string;
-      password!: string;
-    }
+```typescript
+class User {
+  id?: number;
+  username!: string;
+  password!: string;
+}
 
-    await db.InsertAsync("users", {username: "test", password: "plainPasswordYuck"});
+await db.InsertAsync("users", { username: "test", password: "plainPasswordYuck" });
 
-    // or if we wan't to exclude some properties from inserting (in this example we don't insert id)
-    const newUser: User = {username: "test", password: "plainPasswordYuck"};
-    await db.InsertAsync("users", newUser, ["id"]);
+// or if we wan't to exclude some properties from inserting (in this example we don't insert id)
+const newUser: User = { username: "test", password: "plainPasswordYuck" };
+await db.InsertAsync("users", newUser, ["id"]);
+```
 
 ### **InsertReturningAsync** - insert row based on schema and return a field as string
 
-    async InsertReturningAsync<T extends object, R extends keyof T, E extends keyof T>(tableName: string, obj: T, returningPropertyName: R, excludeFields: E[] | null = null): Promise<string>
+```typescript
+async InsertReturningAsync<T extends object, R extends keyof T, E extends keyof T>(tableName: string, obj: T, returningPropertyName: R, excludeFields: E[] | null = null): Promise<string>
+```
 
 Example Usage:
 
-    // return id after inserting
-    const newUserID = await db.InsertReturningAsync("users", {username: "test", password: "plainPasswordYuck"}, "id");
+```typescript
+// return id after inserting
+const newUserID = await db.InsertReturningAsync("users", { username: "test", password: "plainPasswordYuck" }, "id");
+```
 
 ### **UpdateAsync** - update an object based on schema
 
-     async UpdateAsync<T extends object, K extends keyof T>(tableName: string, obj: T, primaryKeyName: K, excludeFields: K[] | null = null): Promise<number>
+```typescript
+async UpdateAsync<T extends object, K extends keyof T>(tableName: string, obj: T, primaryKeyName: K, excludeFields: K[] | null = null): Promise<number>
+```
 
 Example Usage:
 
-    // update user that has this id with this schema
-    const newUserID = await db.UpdateAsync("users", {id: 1, username: "changed", password: "plainPasswordYuck"}, "id");
+```typescript
+// update user that has this id with this schema
+const newUserID = await db.UpdateAsync("users", { id: 1, username: "changed", password: "plainPasswordYuck" }, "id");
+```
 
 ### **DeleteAsync** - delete a row based on a single field
 
-     async DeleteAsync(tableName: string, primaryKeyName: string = "id", primaryKeyValue: any): Promise<number>
+```typescript
+async DeleteAsync(tableName: string, primaryKeyName: string = "id", primaryKeyValue: any): Promise<number>
+```
 
 Example Usage:
 
-    // delete user with id 1
-    const newUserID = await b.DeleteAsync("users", "id", 1);
+```typescript
+// delete user with id 1
+const newUserID = await b.DeleteAsync("users", "id", 1);
+```
 
 ## JapperPool vs JapperConnection
 
@@ -184,27 +218,28 @@ Example Usage:
 When you want to close the pool you call
 
     .CloseAsync()
- 
+
 **JapperConnection** is a one time connection that cannot be reused. So use them wisely! Connections should be opened as short as possible but opening and closing the connection is expensive so you could do multiple queries using one..be smart!
 
 Example Usage:
 
-    import {JapperConnection} from "japper"
+```typescript
+import { JapperConnection } from "japper";
 
-    //manually closing connection
-    const conn = new JapperConnection();
-    await conn.ExecuteAsync("DELETE FROM users"); // first query will automatically open connection
-    await conn.InsertAsync("users", {username: "test", email: "test"});
-    await conn.CloseAsync(); //after we're done we close it
+//manually closing connection
+const conn = new JapperConnection();
+await conn.ExecuteAsync("DELETE FROM users"); // first query will automatically open connection
+await conn.InsertAsync("users", { username: "test", email: "test" });
+await conn.CloseAsync(); //after we're done we close it
 
-    // if we need to use db again, we create a new connection again!
+// if we need to use db again, we create a new connection again!
 
-    // better way (no need to manually close connection)
-    new JapperConnection((cn) => {
-      await cn.ExecuteAsync("DELETE FROM users");
-      await cn.InsertAsync("users", {username: "test", email: "test"});
-    })
-
+// better way (no need to manually close connection)
+new JapperConnection((cn) => {
+  await cn.ExecuteAsync("DELETE FROM users");
+  await cn.InsertAsync("users", { username: "test", email: "test" });
+});
+```
 
 ## Accesing node-postgres
 
