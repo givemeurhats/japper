@@ -22,13 +22,7 @@ It's a thin layer on top of [node-postgres](https://node-postgres.com/) built wi
 
 ## Installation
 
-### Normal install
-
     $ npm install japper
-
-### Typescript support
-
-    $ npm install japper @types/japper
 
 ## Usage
 
