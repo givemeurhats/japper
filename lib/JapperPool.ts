@@ -7,7 +7,7 @@ export class JapperPool extends Japper {
   constructor(config: PoolConfig) {
     super();
     this.adapter = new Pool(config);
-    this.IsClient = false;
-    this.IsOpened = true;
+    this.isClient = false;
+    this.isOpened = true;
   }
 }

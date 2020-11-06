@@ -9,16 +9,16 @@ export class JapperConnection extends Japper {
   constructor(config: ClientConfig) {
     super();
     this.adapter = new Client(config);
-    this.IsClient = true;
-    this.IsOpened = false;
+    this.isClient = true;
+    this.isOpened = false;
   }
 
-  async OpenAsync(callback: JapperConnectionCallback | null = null) {
-    if (!this.IsOpened) await this.adapter.connect();
-    this.IsOpened = true;
+  async openAsync(callback: JapperConnectionCallback | null = null) {
+    if (!this.isOpened) await this.adapter.connect();
+    this.isOpened = true;
     if (callback) {
       await callback(this);
-      await this.CloseAsync();
+      await this.closeAsync();
     }
   }
 }

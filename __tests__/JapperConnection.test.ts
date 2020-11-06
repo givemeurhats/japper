@@ -18,7 +18,7 @@ afterEach(async () => {
 afterAll(async () => {
   await pgOriginalPool.query(`DROP TABLE IF EXISTS ${tableName}`);
   await pgOriginalPool.end();
-  await JP.CloseAsync();
+  await JP.closeAsync();
 });
 
 describe("JapperConnection", () => {
@@ -26,82 +26,82 @@ describe("JapperConnection", () => {
     test("opens connection", async () => {
       const values = ["test", , "test@gmail.com"];
       const JC = new JapperConnection(config);
-      await JC.OpenAsync();
+      await JC.openAsync();
       expect(await JC.adapter.query(InsertUserQuery, values)).toStrictEqual(await JC.adapter.query(InsertUserQuery, values));
-      await JC.CloseAsync();
+      await JC.closeAsync();
     });
 
     test("if lamda is given it automatically closes connection after running it", async () => {
       const values = ["test", , "test@gmail.com"];
       const JC = new JapperConnection(config);
-      await JC.OpenAsync(async (cn) => {
+      await JC.openAsync(async (cn) => {
         expect(await cn.adapter.query(InsertUserQuery, values)).toStrictEqual(await cn.adapter.query(InsertUserQuery, values));
       });
-      expect(JC.IsOpened).toBe(false);
+      expect(JC.isOpened).toBe(false);
     });
 
     describe("QueryAsync", () => {
       test("auto opens a closed connection", async () => {
         const JC = new JapperConnection(config);
-        await JC.QueryAsync(InsertUserQuery, ["test", , "test@gmail.com"]);
-        await JC.CloseAsync();
+        await JC.queryAsync(InsertUserQuery, ["test", , "test@gmail.com"]);
+        await JC.closeAsync();
       });
     });
 
     describe("QueryFirstAsync", () => {
       test("auto opens a closed connection", async () => {
         const JC = new JapperConnection(config);
-        await JC.QueryFirstAsync(`SELECT * FROM ${tableName}`);
-        await JC.CloseAsync();
+        await JC.queryFirstAsync(`SELECT * FROM ${tableName}`);
+        await JC.closeAsync();
       });
     });
 
     describe("ExecuteScalarAsync", () => {
       test("auto opens a closed connection", async () => {
         const JC = new JapperConnection(config);
-        await JC.ExecuteScalarAsync(`SELECT username FROM ${tableName} LIMIT 1`);
-        await JC.CloseAsync();
+        await JC.executeScalarAsync(`SELECT username FROM ${tableName} LIMIT 1`);
+        await JC.closeAsync();
       });
     });
 
     describe("ExecuteAsync", () => {
       test("auto opens a closed connection", async () => {
         const JC = new JapperConnection(config);
-        await JC.ExecuteAsync(`DELETE FROM ${tableName}`);
-        await JC.CloseAsync();
+        await JC.executeAsync(`DELETE FROM ${tableName}`);
+        await JC.closeAsync();
       });
     });
 
     describe("InsertAsync", () => {
       test("auto opens a closed connection", async () => {
         const JC = new JapperConnection(config);
-        await JC.InsertAsync(tableName, user1);
-        await JC.CloseAsync();
+        await JC.insertAsync(tableName, user1);
+        await JC.closeAsync();
       });
     });
 
     describe("InsertReturningAsync", () => {
       test("auto opens a closed connection", async () => {
         const JC = new JapperConnection(config);
-        await JC.InsertReturningAsync(tableName, user1, "username");
-        await JC.CloseAsync();
+        await JC.insertReturningAsync(tableName, user1, "username");
+        await JC.closeAsync();
       });
     });
 
     describe("UpdateAsync", () => {
       test("auto opens a closed connection", async () => {
         const JC = new JapperConnection(config);
-        await JP.InsertAsync(tableName, user1);
-        await JC.UpdateAsync(tableName, { ...user1, username: "changed" }, "email");
-        await JC.CloseAsync();
+        await JP.insertAsync(tableName, user1);
+        await JC.updateAsync(tableName, { ...user1, username: "changed" }, "email");
+        await JC.closeAsync();
       });
     });
 
     describe("DeleteAsync", () => {
       test("auto opens a closed connection", async () => {
         const JC = new JapperConnection(config);
-        await JC.DeleteAsync(tableName, "username", user1);
-        await JC.CloseAsync();
+        await JC.deleteAsync(tableName, "username", user1);
+        await JC.closeAsync();
       });
     });
   });
