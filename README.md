@@ -234,7 +234,7 @@ await conn.CloseAsync(); //after we're done we close it
 // if we need to use db again, we create a new connection again!
 
 // better way (no need to manually close connection)
-new JapperConnection((cn) => {
+new JapperConnection(async (cn) => {
   await cn.ExecuteAsync("DELETE FROM users");
   await cn.InsertAsync("users", { username: "test", email: "test" });
 });
