@@ -1,7 +1,7 @@
 {
   "name": "japper",
   "version": "1.0.0",
-  "description": "Database library for PostgreSQL that doesn't get in your way but makes interacting with database more elegant.It's a thin layer on top of node-postgres built with typescript in mind, heavily inspired by C# dapper library. Writing raw SQL is the recommended way to do anything besides a couple goodies included like simple CRUD queries that are used always. Be more productive when working with your database while still having all the control!",
+  "description": "Database library for PostgreSQL that doesn't get in your way but makes interacting with database more elegant.It's a thin layer on top of node-postgres built with typescript in mind, heavily inspired by C# dapper library. Writing raw SQL is the recommended way to do anything besides a couple goodies included like simple CRUD queries that are used always. Be more productive when working with your database while still having all the control! More info at https://github.com/givemeurhats/japper ",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -27,6 +27,10 @@
   ],
   "author": "Eric Jardas",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/givemeurhats/japper"
+  },
   "dependencies": {
     "lodash.omit": "^4.5.0",
     "pg": "^8.4.2"
